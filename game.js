@@ -52,10 +52,13 @@ let lastJumpTime = 0;
 let jumpCount = 0;
 
 
+let score = 0;
+let  lives = 2;
+
 function create() {
 
 
-    this.physics.world.createDebugGraphic();
+    // this.physics.world.createDebugGraphic();
 
     let scaleFactor = Math.min(
     this.scale.width/1860 ,
@@ -121,17 +124,17 @@ function create() {
         //2nd anime
         { x: 2300, y: 800, key: 'ston', width: 150, height: 150, offsetX: 5, offsetY: 0, sizeW: 120, sizeH: 105 },
         //3rd anime
-        { x: 3200, y: 730, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 100, sizeH: 180 },
+        { x: 3200, y: 730, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 70, sizeH: 180 },
         //4th anime
         { x: 4700, y: 720, key: 'ston', width: 150, height: 150, offsetX: 5, offsetY: 0, sizeW: 120, sizeH: 105 },
         //5th anime
         { x: 5200, y: 720, key: 'ston', width: 150, height: 150, offsetX: 5, offsetY: 0, sizeW: 120, sizeH: 105 },
         //6th anime
-       { x: 7000, y: 780, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 100, sizeH: 180 },
+       { x: 7000, y: 780, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 70, sizeH: 180 },
        //7th anime
         { x: 9500, y: 780, key: 'dasbin', width: 250, height: 250, offsetX: -19, offsetY: 0, sizeW: 100, sizeH: 180 },
         //8th anime
-        { x: 11000, y: 730, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 100, sizeH: 180 },
+        { x: 11000, y: 730, key: 'tree', width: 350, height: 300, offsetX: 0, offsetY: 0, sizeW: 70, sizeH: 180 },
         //9th anime
         { x: 12700, y: 720, key: 'dasbin', width: 250, height: 250, offsetX: -19, offsetY: 0, sizeW: 100, sizeH: 180 },
         //10th anime
@@ -193,12 +196,13 @@ function create() {
 
     player = this.physics.add.sprite(-500*scaleFactor, 600*scaleFactor, 'hero');
     player.setDisplaySize(300* scaleFactor,300* scaleFactor);
+    player.refreshBody();
     player.setSize(100* scaleFactor, 100* scaleFactor);
     player.setOffset(170* scaleFactor, 150* scaleFactor);
     player.canDoubleJump = true;
     
  
-    this.physics.add.collider(player, animis);
+    this.physics.add.overlap(player, animis, hitEnemy , null, this);
     this.physics.add.collider(player, ground);
 
   this.input.on("pointerdown", () => {
@@ -225,7 +229,7 @@ function create() {
     });
 
 
-   scoretext = this.add.text (100 * scaleFactor,70* scaleFactor,"Score: 0",
+   scoretext = this.add.text (100 * scaleFactor,70* scaleFactor,"Score: "+ score,
         {
             fontSize:"52px",
             fill:"#000000"
@@ -234,9 +238,14 @@ function create() {
     );
     scoretext.setScrollFactor(0);
 
- const live = this.add.image(1800* scaleFactor, 70* scaleFactor, 'live ');
-    live.setDisplaySize(150* scaleFactor, 150* scaleFactor);
-    live.setScrollFactor(0);
+this.physics.add.overlap(player, coin, collectCoin, null, this);
+
+this.lifeImage = [];
+   this.lifeImage [0] = this.add.image(1800* scaleFactor, 70* scaleFactor, 'live ')
+    .setDisplaySize(150* scaleFactor, 150* scaleFactor).setScrollFactor(0);
+
+    this.lifeImage[1] = this.add.image(1730* scaleFactor, 70* scaleFactor, 'live ')
+    .setDisplaySize(150* scaleFactor, 150* scaleFactor).setScrollFactor(0);
 
     this.cameras.main.startFollow(player, true, 1, 0);
     control = this.input.keyboard.createCursorKeys();
@@ -267,5 +276,43 @@ function update() {
         player.canDoubleJump = true;
         jumpCount = 0;
     }
+
+    if (player.y > 1200) {
+        hitEnemy.call(this,player, null);
+    }
 }
  
+
+function collectCoin(player, coin) {
+    //coin.disableBody(true, true);
+    coin.destroy();
+    score += 10;
+    scoretext.setText("Score: " + score);
+}
+
+function hitEnemy(player, anime) {
+    lives -= 1;  // একবার ধাক্কা খেলেই life কমবে
+
+    this.lifeImage[lives].setVisible(false); // life image লুকিয়ে দিন
+    if (lives <= 0) {
+        // 2 বার ধাক্কা লাগলে player destroy
+        // player.destroy();
+        player.setVisible(false);
+        this.physics.pause();
+        this.add.text(this.cameras.main.scrollX + 600, 400, 'Game Over', {
+            fontSize: '128px',
+            fill: '#000000'
+        });
+
+    } else {
+        // প্রথম ধাক্কা: player একটু flash করবে
+       player.setPosition(player.x-0, 300);
+        this.tweens.add({
+            targets: player,
+            alpha: 0.2,
+            duration: 100,
+            yoyo: true,
+            repeat: 5
+        });
+    }
+}
