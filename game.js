@@ -32,6 +32,8 @@ let game = new Phaser.Game(config);
 
 function preload() {
 
+    this.load.image("live ","asste/live.png");
+    this.load.image("coin","asste/coin.png");
     this.load.image("tree","asste/tree.png");
     this.load.image("ston","asste/ston.png");
     this.load.image("dasbin","asste/dasbin.png")
@@ -48,15 +50,20 @@ let lastTapTime = 0;
 let tapCount = 0; 
 let lastJumpTime = 0;
 let jumpCount = 0;
+
+
 function create() {
+
+
     this.physics.world.createDebugGraphic();
 
     let scaleFactor = Math.min(
     this.scale.width/1860 ,
     this.scale.height/860
-);
+    );
 
 
+ 
   const bgWidth = 1560;
     const bgHeight = 1050;
     const repeatCount = Math.ceil(3000 / bgWidth) + 9; // যতক্ষণ দরকার repeat করুন
@@ -67,9 +74,7 @@ function create() {
         backround.setDepth(-1); // সব কিছুর পিছনে রাখুন
     }
 
-
-    
-    const test = this.physics.add.staticGroup();
+    const ground = this.physics.add.staticGroup();
     const grounds = [
         //1st ground
         { x: -300, y: 950, width: 2000, height: 850, offsetX: -48, offsetY: 2, sizeW: 1270, sizeH: 150 },
@@ -89,6 +94,7 @@ function create() {
         { x: 8200, y: 950, width: 1500, height: 350, offsetX: -48, offsetY: 2, sizeW: 955, sizeH: 65 },
         //9th ground
         { x: 9400, y: 900, width: 1500, height: 350, offsetX: -40, offsetY: 0, sizeW: 955, sizeH: 65 },
+
         //10th ground
         { x: 10600, y: 850, width: 1500, height: 350, offsetX: -40, offsetY: 0, sizeW: 950, sizeH: 65 },
         //11th ground
@@ -99,18 +105,14 @@ function create() {
         { x: 14000, y: 900, width: 1500, height: 350, offsetX: -48, offsetY: 2, sizeW: 955, sizeH: 65 },
     ];
 
-
-
     grounds.forEach(g => {
-        const ground = test.create(g.x * scaleFactor, g.y * scaleFactor, 'ground');
-        ground.setDisplaySize(g.width * scaleFactor, g.height * scaleFactor);
-         ground.setOffset(g.offsetX * scaleFactor, g.offsetY * scaleFactor);
-        ground.refreshBody();
-        ground.setSize(g.sizeW * scaleFactor, g.sizeH * scaleFactor); 
+        const grounde = ground.create(g.x * scaleFactor, g.y * scaleFactor, 'ground');
+        grounde.setDisplaySize(g.width * scaleFactor, g.height * scaleFactor);
+         grounde.setOffset(g.offsetX * scaleFactor, g.offsetY * scaleFactor);
+        grounde.refreshBody();
+        grounde.setSize(g.sizeW * scaleFactor, g.sizeH * scaleFactor); 
        
     });
-
-
 
     const animis = this.physics.add.staticGroup();
     const animsgroup = [
@@ -146,6 +148,49 @@ function create() {
     });
 
 
+    const coin = this.physics.add.staticGroup();
+    const coingroup = [
+        //1st coin
+        { x: 1500, y: 780, key: "coin", width: 80, height: 80 },
+        //2nd coin
+        { x: 2700, y: 790, key: "coin", width: 80, height: 80 },
+        //3rd coin
+        { x: 3500, y: 770, key: "coin", width: 80, height: 80 },
+        //4th coin
+        { x: 4000, y: 770, key: "coin", width: 80, height: 80 },
+        //5th coin
+        { x: 4950, y: 720, key: "coin", width: 80, height: 80 },
+        //6th coin
+        { x: 5600, y: 770, key: "coin", width: 80, height: 80 },
+        //7th coin
+        { x: 6000, y: 770, key: "coin", width: 80, height: 80 },
+        //8th coin
+        { x: 7400, y: 740, key: "coin", width: 80, height: 80 },
+        //9th coin
+        { x: 9800, y: 780, key: "coin", width: 80, height: 80 },
+        //10th coin
+        { x: 11500, y: 720, key: "coin", width: 80, height: 80 },
+        //11th coin
+        { x: 12250, y: 720, key: "coin", width: 80, height: 80 },
+        //12th coin
+        { x: 13700, y: 790, key: "coin", width: 80, height: 80 },
+        //13th coin
+        { x: 13900, y: 790, key: "coin", width: 80, height: 80},
+        //14th coin
+        { x: 14100, y: 790, key: "coin", width: 80, height: 80 },
+        //15th coin
+        { x: 14300, y: 790, key: "coin", width: 80, height: 80 },
+       
+    
+    ]
+
+
+    coingroup.forEach(c => {
+        const coi = coin.create(c.x * scaleFactor, c.y * scaleFactor, c.key);
+        coi.setDisplaySize(c.width * scaleFactor, c.height * scaleFactor);
+        coi.refreshBody();
+    });
+
     player = this.physics.add.sprite(-500*scaleFactor, 600*scaleFactor, 'hero');
     player.setDisplaySize(300* scaleFactor,300* scaleFactor);
     player.setSize(100* scaleFactor, 100* scaleFactor);
@@ -154,7 +199,7 @@ function create() {
     
  
     this.physics.add.collider(player, animis);
-    this.physics.add.collider(player, test);
+    this.physics.add.collider(player, ground);
 
   this.input.on("pointerdown", () => {
         const currentTime = Date.now();
@@ -179,6 +224,20 @@ function create() {
         }
     });
 
+
+   scoretext = this.add.text (100 * scaleFactor,70* scaleFactor,"Score: 0",
+        {
+            fontSize:"52px",
+            fill:"#000000"
+        
+        }
+    );
+    scoretext.setScrollFactor(0);
+
+ const live = this.add.image(1800* scaleFactor, 70* scaleFactor, 'live ');
+    live.setDisplaySize(150* scaleFactor, 150* scaleFactor);
+    live.setScrollFactor(0);
+
     this.cameras.main.startFollow(player, true, 1, 0);
     control = this.input.keyboard.createCursorKeys();
 }
@@ -192,7 +251,7 @@ function update() {
     } else if (control.right.isDown) {
         player.setVelocityX(300);
     } else {
-        player.setVelocityX(380);
+        player.setVelocityX(0);
     }
 
     // Keyboard double jump
