@@ -267,7 +267,7 @@ this.lifeImage = [];
     this.crashmusic = this.sound.add("crash-music", { volume: 0.5 });  
     this.jumpmusic = this.sound.add("jump", { volume: 0.5 });
     this.gameovermusic = this.sound.add("game-over-music", { volume: 0.5 });
-    this.winmusic = this.sound.add("win-music", { volume: 1.0 });
+    this.winmusic = this.sound.add("win-music", { volume: 0.5 });
 }
 
 
@@ -309,7 +309,7 @@ function update() {
             fontSize: '128px',
             fill: '#000000'
         });
-        this.player.destroy();
+       
     }
 
      
