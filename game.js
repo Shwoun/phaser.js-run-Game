@@ -205,7 +205,7 @@ function create() {
 
 
 
-    player = this.physics.add.sprite(14000*scaleFactor, 600*scaleFactor, 'hero');
+    player = this.physics.add.sprite(-600*scaleFactor, 600*scaleFactor, 'hero');
     player.setDisplaySize(300* scaleFactor,300* scaleFactor);
     player.refreshBody();
     player.setSize(100* scaleFactor, 100* scaleFactor);
@@ -307,10 +307,16 @@ function update() {
          if(player.x> 14310){
             playerwin.call(this);
          }else{
-             this.add.text(this.cameras.main.scrollX+600, 400, 'You Win', {
-        fontSize: '128px',
-        fill: '#000000'
-    });
+
+         this.add.text(this.cameras.main.scrollX+600, 400, 'You Win', 
+            {
+
+           fontSize: '128px',
+           fill: '#000000'
+
+           });
+console.log(score);
+
          }
         
      
@@ -326,7 +332,7 @@ function playerwin (){
     this.backroundMusic.stop();
     this.physics.pause();
     this.player.setVisible(false);
-    
+
 
      
 }
