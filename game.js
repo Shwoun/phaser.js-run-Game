@@ -205,7 +205,7 @@ function create() {
 
 
 
-    player = this.physics.add.sprite(-500*scaleFactor, 600*scaleFactor, 'hero');
+    player = this.physics.add.sprite(14000*scaleFactor, 600*scaleFactor, 'hero');
     player.setDisplaySize(300* scaleFactor,300* scaleFactor);
     player.refreshBody();
     player.setSize(100* scaleFactor, 100* scaleFactor);
@@ -268,6 +268,9 @@ this.lifeImage = [];
     this.jumpmusic = this.sound.add("jump", { volume: 0.5 });
     this.gameovermusic = this.sound.add("game-over-music", { volume: 0.5 });
     this.winmusic = this.sound.add("win-music", { volume: 0.5 });
+
+   
+    
 }
 
 
@@ -299,23 +302,34 @@ function update() {
     if (player.y > 1200) {
         hitEnemy.call(this,player, null);
     }
-    if (player.x>14350){
-        this.winmusic.play();
-        this.jumpmusic.stop();
-        this.backroundMusic.stop();
+     if( player.x > 14300 ){
+
+         if(player.x> 14310){
+            playerwin.call(this);
+         }else{
+             this.add.text(this.cameras.main.scrollX+600, 400, 'You Win', {
+        fontSize: '128px',
+        fill: '#000000'
+    });
+         }
         
-        this.physics.pause();
-        this.add.text(this.cameras.main.scrollX + 600, 400, 'You Win!', {
-            fontSize: '128px',
-            fill: '#000000'
-        });
-       
-    }
+     
+    
+   }
+}
+
+function playerwin (){
+
+    
+    this.winmusic.play();
+    this.jumpmusic.stop();
+    this.backroundMusic.stop();
+    this.physics.pause();
+    this.player.setVisible(false);
+    
 
      
 }
- 
-
 function collectCoin(player, coin) {
     //coin.disableBody(true, true);
     coin.destroy();
