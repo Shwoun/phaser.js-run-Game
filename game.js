@@ -303,12 +303,13 @@ function update() {
         this.winmusic.play();
         this.jumpmusic.stop();
         this.backroundMusic.stop();
-        this.player.destroy();
+        
         this.physics.pause();
         this.add.text(this.cameras.main.scrollX + 600, 400, 'You Win!', {
             fontSize: '128px',
             fill: '#000000'
         });
+        this.player.destroy();
     }
 
      
