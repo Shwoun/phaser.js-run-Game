@@ -1,0 +1,7 @@
+{
+    "editor.cursorBlinking": "expand",
+    "terminal.integrated.mouseWheelZoom": true,
+    "window.zoomPerWindow": false,
+    "window.zoomLevel": 0,
+    "editor.mouseWheelZoom": true
+}

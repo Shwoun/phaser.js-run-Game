@@ -31,7 +31,16 @@ let config = {
 let game = new Phaser.Game(config);
 
 function preload() {
+ 
+    // music loading
+    this.load.audio("jump","asste/jump-music.mp3");
+    this.load.audio("coin-music","asste/coin-music.mp3");
+    this.load.audio("crash-music","asste/crash-music.mp3");
+    this.load.audio("backround-music","asste/backroun-music.mp3");
+    this.load.audio("game-over-music","asste/game-over.mp3");
+    this.load.audio("win-music","asste/win-music.mp3");
 
+    //asste loading
     this.load.image("live ","asste/live.png");
     this.load.image("coin","asste/coin.png");
     this.load.image("tree","asste/tree.png");
@@ -59,6 +68,9 @@ function create() {
 
 
     // this.physics.world.createDebugGraphic();
+
+    this.backroundMusic = this.sound.add("backround-music", { loop: true, volume: 0.3 });
+    this.backroundMusic.play();
 
     let scaleFactor = Math.min(
     this.scale.width/1860 ,
@@ -97,7 +109,6 @@ function create() {
         { x: 8200, y: 950, width: 1500, height: 350, offsetX: -48, offsetY: 2, sizeW: 955, sizeH: 65 },
         //9th ground
         { x: 9400, y: 900, width: 1500, height: 350, offsetX: -40, offsetY: 0, sizeW: 955, sizeH: 65 },
-
         //10th ground
         { x: 10600, y: 850, width: 1500, height: 350, offsetX: -40, offsetY: 0, sizeW: 950, sizeH: 65 },
         //11th ground
@@ -186,13 +197,13 @@ function create() {
        
     
     ]
-
-
     coingroup.forEach(c => {
         const coi = coin.create(c.x * scaleFactor, c.y * scaleFactor, c.key);
         coi.setDisplaySize(c.width * scaleFactor, c.height * scaleFactor);
         coi.refreshBody();
     });
+
+
 
     player = this.physics.add.sprite(-500*scaleFactor, 600*scaleFactor, 'hero');
     player.setDisplaySize(300* scaleFactor,300* scaleFactor);
@@ -218,12 +229,14 @@ function create() {
         // Double jump
         if (tapCount === 2 && player.canDoubleJump) {
             player.setVelocityY(-800);
+            this.jumpmusic.play();
             player.canDoubleJump = false;
             tapCount = 0;
         } 
         // Single jump
         else if (tapCount === 1 && player.body.touching.down) {
             player.setVelocityY(-800);
+            this.jumpmusic.play();
             player.canDoubleJump = true;
         }
     });
@@ -249,6 +262,12 @@ this.lifeImage = [];
 
     this.cameras.main.startFollow(player, true, 1, 0);
     control = this.input.keyboard.createCursorKeys();
+
+    this.coinmusic = this.sound.add("coin-music", { volume: 0.7 });
+    this.crashmusic = this.sound.add("crash-music", { volume: 0.5 });  
+    this.jumpmusic = this.sound.add("jump", { volume: 0.5 });
+    this.gameovermusic = this.sound.add("game-over-music", { volume: 0.5 });
+    this.winmusic = this.sound.add("win-music", { volume: 1.0 });
 }
 
 
@@ -260,7 +279,7 @@ function update() {
     } else if (control.right.isDown) {
         player.setVelocityX(300);
     } else {
-        player.setVelocityX(0);
+        player.setVelocityX(300);
     }
 
     // Keyboard double jump
@@ -280,12 +299,15 @@ function update() {
     if (player.y > 1200) {
         hitEnemy.call(this,player, null);
     }
+
+     
 }
  
 
 function collectCoin(player, coin) {
     //coin.disableBody(true, true);
     coin.destroy();
+    this.coinmusic.play();
     score += 10;
     scoretext.setText("Score: " + score);
 }
@@ -298,6 +320,7 @@ function hitEnemy(player, anime) {
         // 2 বার ধাক্কা লাগলে player destroy
         // player.destroy();
         player.setVisible(false);
+        this.gameovermusic.play();
         this.physics.pause();
         this.add.text(this.cameras.main.scrollX + 600, 400, 'Game Over', {
             fontSize: '128px',
@@ -307,6 +330,7 @@ function hitEnemy(player, anime) {
     } else {
         // প্রথম ধাক্কা: player একটু flash করবে
        player.setPosition(player.x-0, 300);
+        this.crashmusic.play();
         this.tweens.add({
             targets: player,
             alpha: 0.2,
