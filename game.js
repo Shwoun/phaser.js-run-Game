@@ -315,7 +315,8 @@ function update() {
            fill: '#000000'
 
            });
-console.log(score);
+   
+           if ( window.Android ) { Android.sendScore(score); }
 
          }
         
