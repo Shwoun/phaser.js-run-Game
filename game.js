@@ -69,7 +69,7 @@ function create() {
 
     // this.physics.world.createDebugGraphic();
 
-    this.backroundMusic = this.sound.add("backround-music", { loop: true, volume: 0.3 });
+    this.backroundMusic = this.sound.add("backround-music", { loop: true, volume: 0.2 });
     this.backroundMusic.play();
 
     let scaleFactor = Math.min(
@@ -299,6 +299,17 @@ function update() {
     if (player.y > 1200) {
         hitEnemy.call(this,player, null);
     }
+    if (player.x>14350){
+        this.winmusic.play();
+        this.jumpmusic.stop();
+        this.backroundMusic.stop();
+        this.player.destroy();
+        this.physics.pause();
+        this.add.text(this.cameras.main.scrollX + 600, 400, 'You Win!', {
+            fontSize: '128px',
+            fill: '#000000'
+        });
+    }
 
      
 }
@@ -321,6 +332,7 @@ function hitEnemy(player, anime) {
         // player.destroy();
         player.setVisible(false);
         this.gameovermusic.play();
+        this.jumpmusic.stop();
         this.physics.pause();
         this.add.text(this.cameras.main.scrollX + 600, 400, 'Game Over', {
             fontSize: '128px',
