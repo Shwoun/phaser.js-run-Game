@@ -305,10 +305,12 @@ function update() {
      if( player.x > 14300 ){
 
          if(player.x> 14310){
-            playerwin.call(this);
+            
+            console.log(score);
             if (window.Android){
                 window.Android.usercoin(this.score);
             }
+            playerwin.call(this);
          }else{
 
          this.add.text(this.cameras.main.scrollX+600, 400, 'You Win', 
