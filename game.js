@@ -306,6 +306,9 @@ function update() {
 
          if(player.x> 14310){
             playerwin.call(this);
+            if (window.Android){
+                window.Android.usercoin(this.score);
+            }
          }else{
 
          this.add.text(this.cameras.main.scrollX+600, 400, 'You Win', 
@@ -316,7 +319,6 @@ function update() {
 
            });
    
-           if ( window.Android ) { Android.sendScore(score); }
 
          }
         
