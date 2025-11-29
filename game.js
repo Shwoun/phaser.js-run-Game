@@ -306,7 +306,7 @@ function update() {
 
          if(player.x> 14310){
             
-            console.log(score);
+            console.log("score:",this.score);
             if (window.Android){
                 window.Android.usercoin(this.score);
             }
