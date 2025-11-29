@@ -306,10 +306,8 @@ function update() {
 
          if(player.x> 14310){
             
-            localStorage.setItem('Score', this.score);
-            if (window.Android){
-                window.Android.usercoin(this.score);
-            }
+            localStorage.setItem('Score',score);
+           
             playerwin.call(this);
          }else{
 
