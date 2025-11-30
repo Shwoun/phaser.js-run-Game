@@ -77,8 +77,14 @@ function create() {
     this.scale.height/860
     );
 
-
+ window.setUserId = function(id) {
+        console.log("User ID set to:", id);
+    
+        window.userID = id;
+        this.add.text(150*scaleFactor, 70*scaleFactor, 'User ID: ' + id, { fontSize: '24px', fill: '#000' }).setScrollFactor(0);
+    };
  
+
   const bgWidth = 1560;
     const bgHeight = 1050;
     const repeatCount = Math.ceil(3000 / bgWidth) + 9; // যতক্ষণ দরকার repeat করুন
@@ -269,12 +275,7 @@ this.lifeImage = [];
     this.gameovermusic = this.sound.add("game-over-music", { volume: 0.5 });
     this.winmusic = this.sound.add("win-music", { volume: 0.5 });
 
-   window.setUserId = function(id) {
-        console.log("User ID set to:", id);
-    
-        window.userID = id;
-        this.add.text(250, 450, 'User ID: ' + id, { fontSize: '24px', fill: '#000' }).setScrollFactor(0);
-    };
+  
     
 }
 
