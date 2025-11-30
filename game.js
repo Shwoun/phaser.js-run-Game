@@ -64,6 +64,9 @@ let jumpCount = 0;
 let score = 0;
 let  lives = 2;
 
+let playerID = "Loading...";
+let playerIdText;
+
 function create() {
 
 
@@ -77,13 +80,23 @@ function create() {
     this.scale.height/860
     );
 
- window.setUserId = function(id) {
-        console.log("User ID set to:", id);
-    this.add.text(150*scaleFactor, 70*scaleFactor, 'User ID: ' + id, { fontSize: '50px', fill: '#000' }).setScrollFactor(0);
-        window.userID = id;
-        
-    };
+function setUserId(value) {
+    playerID = value;
+
+    if (playerIdText) {
+        playerIdText.setText("Player ID: " + playerID);
+    }
+}
  
+playerIdText = this.add.text(
+    100 * scaleFactor,
+    150 * scaleFactor,
+    'Player ID: ' + playerID,
+    {
+        fontSize: '32px',
+        fill: '#000000'
+    }
+).setScrollFactor(0);
 
   const bgWidth = 1560;
     const bgHeight = 1050;
