@@ -79,9 +79,9 @@ function create() {
 
  window.setUserId = function(id) {
         console.log("User ID set to:", id);
-    
+    this.add.text(150*scaleFactor, 70*scaleFactor, 'User ID: ' + id, { fontSize: '50px', fill: '#000' }).setScrollFactor(0);
         window.userID = id;
-        this.add.text(150*scaleFactor, 70*scaleFactor, 'User ID: ' + id, { fontSize: '24px', fill: '#000' }).setScrollFactor(0);
+        
     };
  
 
