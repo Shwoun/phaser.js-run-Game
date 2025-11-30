@@ -67,6 +67,14 @@ let  lives = 2;
 let playerID = "Loading...";
 let playerIdText;
 
+function setUserId(value) {
+    playerID = value;
+
+    if (playerIdText) {
+        playerIdText.setText("Player ID: " + playerID);
+    }
+}
+ 
 function create() {
 
 
@@ -80,14 +88,7 @@ function create() {
     this.scale.height/860
     );
 
-function setUserId(value) {
-    playerID = value;
 
-    if (playerIdText) {
-        playerIdText.setText("Player ID: " + playerID);
-    }
-}
- 
 playerIdText = this.add.text(
     100 * scaleFactor,
     150 * scaleFactor,
