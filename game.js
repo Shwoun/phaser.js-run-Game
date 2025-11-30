@@ -269,7 +269,12 @@ this.lifeImage = [];
     this.gameovermusic = this.sound.add("game-over-music", { volume: 0.5 });
     this.winmusic = this.sound.add("win-music", { volume: 0.5 });
 
-   
+   window.setUserId = function(id) {
+        console.log("User ID set to:", id);
+    
+        window.userID = id;
+        this.add.text(250, 450, 'User ID: ' + id, { fontSize: '24px', fill: '#000' }).setScrollFactor(0);
+    };
     
 }
 
@@ -306,7 +311,7 @@ function update() {
 
          if(player.x> 14310){
             
-            localStorage.setItem('Score',score);
+        
            
             playerwin.call(this);
          }else{
